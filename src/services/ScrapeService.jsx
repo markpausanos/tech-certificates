@@ -14,6 +14,8 @@ const URL_EscoCert =
 	"https://techcertificate20240511005554.azurewebsites.net/api/Scrape/EscoCert";
 const URL_EPA608 =
 	"https://techcertificate20240511005554.azurewebsites.net/api/Scrape/EPA608";
+const URL_Save =
+	"https://techcertificate20240511005554.azurewebsites.net/api/Scrape/Save";
 
 export const ScrapeService = {
 	retrieveVGI: async (firstName = "", lastName = "") => {
@@ -97,6 +99,15 @@ export const ScrapeService = {
 			const response = await axios.get(
 				`${URL_EPA608}?firstName=${firstName}&lastName=${lastName}&birthday=${birthday}&certNumber=${certNumber}&phoneNumber=${phoneNumber}`
 			);
+
+			return response;
+		} catch (error) {
+			console.error(error);
+		}
+	},
+	saveData: async (data) => {
+		try {
+			const response = await axios.post(URL_Save, data);
 
 			return response;
 		} catch (error) {

@@ -1,20 +1,8 @@
 import { useState } from "react";
-import {
-	TableContainer,
-	Paper,
-	Table,
-	TableHead,
-	TableCell,
-	TableBody,
-	TableRow,
-	Alert,
-	Button,
-	TextField,
-} from "@mui/material";
-import { TECHNICIAN_HEADERS, DUMMY_DATA } from "./utils";
+import { Alert, Button, TextField } from "@mui/material";
 import { useScrape } from "./hooks/useScrape";
 import "./App.css";
-import { TestService } from "./services/TestService";
+import { BarLoader } from "react-spinners";
 
 const initialData = {
 	FirstName: "",
@@ -61,22 +49,49 @@ function App() {
 	};
 
 	const handleSubmit = async () => {
-		// await scrapeData(userData);
-		// setUserData(initialData);/
-		const response = await TestService.retrieveVGI(
-			userData.FirstName,
-			userData.LastName
-		);
+		await scrapeData(userData);
+		setUserData(initialData);
+	};
 
-		console.log(response);
+	const checkIfAllFieldsEmpty = () => {
+		return (
+			userData["FirstName"] == "" &&
+			userData["LastName"] == "" &&
+			userData["City"] == "" &&
+			userData["State"] == "" &&
+			userData["ZipCode"] == "" &&
+			userData["CertificateNumber"] == "" &&
+			userData["SSN"] == "" &&
+			userData["Birthdate"] == "" &&
+			userData["Phone"] == ""
+		);
 	};
 
 	return (
-		<div className="h-screen w-screen flex flex-col items-center px-7 pt-10 gap-10">
-			<div>
-				<h1 className="text-3xl font-bold">Technician Data Search</h1>
+		<div className="h-screen w-screen flex flex-col items-center px-7 pt-10 gap-10 justify-center">
+			<div className=" h-[15vh] w-full">
+				<img
+					src="/service.png"
+					alt="ESCO Logo"
+					className=" object-contain h-full w-full"
+				/>
 			</div>
-			<div className="w-full px-10 flex flex-row gap-10">
+			<div className="flex flex-row justify-evenly w-screen">
+				<div className="w-1/4 md:w-1/3">
+					<div className="border-b-4 my-4 border-black"></div>
+				</div>
+				<div className="w-1/2 text-center md:w-1/3">
+					<h1 className="text-4xl font-bold">Technician Data Search</h1>
+				</div>
+				<div className="w-1/4 md:w-1/3">
+					<div className="border-b-4 my-4 border-black"></div>
+				</div>
+			</div>
+			<div>
+				<h2 className="text-2xl">Enter the technician&apos;s details below:</h2>
+			</div>
+
+			<div className="w-full px-10 flex flex-row gap-10 border-gray-300 border-2 py-5">
 				<div className="flex flex-col  gap-5 w-1/3">
 					<TextField
 						name="FirstName"
@@ -189,18 +204,37 @@ function App() {
 						onChange={handleChange}
 					/>
 
-					<div className="mt-auto w-full flex flex-col gap-2">
-						<Alert severity="success">Results Saved to Sheets</Alert>
-						<Button
-							variant="contained"
-							color="primary"
-							style={{
-								width: "100%",
-							}}
-							onClick={handleSubmit}
-						>
-							Search and Save to Sheets
-						</Button>
+					<div className="mt-auto w-full flex flex-col gap-2 items-center">
+						{error && checkIfAllFieldsEmpty() && (
+							<div className="w-full">
+								<Alert severity="error">{error}</Alert>
+							</div>
+						)}
+						{!isScraping && scrapedData.length > 0 && (
+							<div className="fade-in-out w-full">
+								<Alert severity="success">Results Saved to Sheets</Alert>
+							</div>
+						)}
+						{!isScraping && scrapeData.length == 0 && (
+							<div className="w-full">
+								<Alert severity="info">No Results Found</Alert>
+							</div>
+						)}
+						{!isScraping && (
+							<Button
+								variant="contained"
+								color="primary"
+								style={{
+									minHeight: "5vh",
+									width: "100%",
+									textTransform: "none",
+								}}
+								onClick={handleSubmit}
+							>
+								Search and Save to Sheets
+							</Button>
+						)}
+						{isScraping && <BarLoader color="blue" />}
 					</div>
 				</div>
 			</div>

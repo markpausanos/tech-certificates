@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useState } from "react";
 import { ScrapeService } from "../services/ScrapeService";
 
@@ -10,47 +11,100 @@ export const useScrape = () => {
 		setIsScraping(true);
 
 		try {
-			const dataVGI = await ScrapeService.retrieveVGI(
-				userData["FirstName"],
-				userData["LastName"]
-			);
+			if (
+				userData["FirstName"] == "" &&
+				userData["LastName"] == "" &&
+				userData["City"] == "" &&
+				userData["State"] == "" &&
+				userData["ZipCode"] == "" &&
+				userData["CertificateNumber"] == "" &&
+				userData["SSN"] == "" &&
+				userData["Birthdate"] == "" &&
+				userData["Phone"] == ""
+			) {
+				throw new Error("Please fill in at least one field.");
+			}
 
-			const dataMains = await ScrapeService.retrieveMains(
-				userData["FirstName"],
-				userData["LastName"],
-				userData["City"],
-				userData["State"],
-				userData["ZipCode"]
-			);
+			const dataVGI =
+				userData["FirstName"] != "" && userData["LastName"] != ""
+					? await ScrapeService.retrieveVGI(
+							userData["FirstName"],
+							userData["LastName"]
+					  )
+					: {};
 
-			const dataACCA = await ScrapeService.retrieveACCA(
-				userData["FirstName"],
-				userData["LastName"]
-			);
+			const dataMains =
+				userData["FirstName"] != "" &&
+				userData["LastName"] != "" &&
+				userData["City"] != "" &&
+				userData["State"] != "" &&
+				userData["ZipCode"] != ""
+					? await ScrapeService.retrieveMains(
+							userData["FirstName"],
+							userData["LastName"],
+							userData["City"],
+							userData["State"],
+							userData["ZipCode"]
+					  )
+					: {};
 
-			const dataSkillC = await ScrapeService.retrieveSkillC(
-				userData["CertificateNumber"]
-			);
+			const dataACCA =
+				userData["FirstName"] != "" && userData["LastName"] != ""
+					? await ScrapeService.retrieveACCA(
+							userData["FirstName"],
+							userData["LastName"]
+					  )
+					: {};
 
-			const dataEscoSSN = await ScrapeService.retrieveEscoSSN(
-				userData["FirstName"],
-				userData["LastName"],
-				userData["SSN"]
-			);
+			const dataSkillC = userData["CertificateNumber"]
+				? await ScrapeService.retrieveSkillC(userData["CertificateNumber"])
+				: {};
+
+			const dataEscoSSN =
+				userData["FirstName"] != "" ||
+				userData["LastName"] != "" ||
+				userData["SSN"] != ""
+					? await ScrapeService.retrieveEscoSSN(
+							userData["FirstName"],
+							userData["LastName"],
+							userData["SSN"]
+					  )
+					: {};
+
+			const dataEscoCert =
+				userData["FirstName"] != "" ||
+				userData["LastName"] != "" ||
+				userData["CertificateNumber"] != ""
+					? await ScrapeService.retrieveEscoCert(
+							userData["FirstName"],
+							userData["LastName"],
+							userData["CertificateNumber"]
+					  )
+					: {};
 
 			const scrapedData = [
-				{
-					...dataVGI.data,
-					...dataMains.data,
-					...dataACCA.data,
-					...dataSkillC.data,
-					...dataEscoSSN.data,
-				},
-			];
+				{ ...(dataVGI.data || {}) },
+				{ ...(dataMains.data || {}) },
+				{ ...(dataACCA.data || {}) },
+				{ ...(dataSkillC.data || {}) },
+				{ ...(dataEscoSSN.data || {}) },
+				{ ...(dataEscoCert.data || {}) },
+			].filter((item) => Object.keys(item).length > 0);
 
 			setScrapedData(scrapedData);
+
+			if (scrapedData.length > 0) {
+				const formattedScrapedData = scrapedData.map(
+					(obj) => Object.values(obj)[0]
+				);
+
+				const isSaved = await ScrapeService.saveData(formattedScrapedData);
+				if (!isSaved) {
+					throw new Error("Failed to save data.");
+				}
+			}
+
 			setError(null);
-			console.log(scrapedData);
 		} catch (error) {
 			setError(error.message);
 		}
