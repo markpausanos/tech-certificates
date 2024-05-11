@@ -17,9 +17,22 @@ const initialData = {
 	Phone: "",
 };
 
+const initialFieldErrorStatus = {
+	FirstName: false,
+	MiddleName: false,
+	LastName: false,
+	City: false,
+	State: false,
+	ZipCode: false,
+	CertificateNumber: false,
+	SSN: false,
+	Birthdate: false,
+	Phone: false,
+};
+
 function App() {
 	const [userData, setUserData] = useState(initialData);
-	const [birthDateError, setBirthDateError] = useState(false);
+	const [fieldErrors, setFieldErrors] = useState(initialFieldErrorStatus);
 	const { isScraping, scrapedData, error, scrapeData } = useScrape();
 
 	const handleChange = (e) => {
@@ -42,28 +55,37 @@ function App() {
 
 		const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/; // MM/DD/YYYY format
 		if (name === "Birthdate" && !dateRegex.test(value) && value.length == 10) {
-			setBirthDateError(() => true);
+			setFieldErrors((prevErrors) => ({
+				...prevErrors,
+				Birthdate: true,
+			}));
 		} else {
-			setBirthDateError(() => false);
+			setFieldErrors((prevErrors) => ({
+				...prevErrors,
+				Birthdate: false,
+			}));
 		}
 	};
 
 	const handleSubmit = async () => {
 		await scrapeData(userData);
-		setUserData(initialData);
+
+		if (!error) {
+			setUserData(initialData);
+		}
 	};
 
 	const checkIfAllFieldsEmpty = () => {
 		return (
-			userData["FirstName"] == "" &&
-			userData["LastName"] == "" &&
-			userData["City"] == "" &&
-			userData["State"] == "" &&
-			userData["ZipCode"] == "" &&
-			userData["CertificateNumber"] == "" &&
-			userData["SSN"] == "" &&
-			userData["Birthdate"] == "" &&
-			userData["Phone"] == ""
+			userData["FirstName"] === "" &&
+			userData["LastName"] === "" &&
+			userData["City"] === "" &&
+			userData["State"] === "" &&
+			userData["ZipCode"] === "" &&
+			userData["CertificateNumber"] === "" &&
+			userData["SSN"] === "" &&
+			userData["Birthdate"] === "" &&
+			userData["Phone"] === ""
 		);
 	};
 
@@ -132,7 +154,18 @@ function App() {
 							background: "#E8E8E9",
 						}}
 						onChange={handleChange}
-						error={birthDateError}
+						error={fieldErrors.Birthdate}
+					/>
+					<TextField
+						name="SSN"
+						label="SSN"
+						value={userData.SSN}
+						fullWidth
+						type="tel"
+						style={{
+							background: "#E8E8E9",
+						}}
+						onChange={handleChange}
 					/>
 				</div>
 				<div className=" bg-black w-0.5" />
@@ -169,22 +202,8 @@ function App() {
 						onChange={handleChange}
 					/>
 					<TextField
-						name="SSN"
-						label="SSN"
-						value={userData.SSN}
-						fullWidth
-						type="tel"
-						style={{
-							background: "#E8E8E9",
-						}}
-						onChange={handleChange}
-					/>
-				</div>
-				<div className=" bg-black w-0.5" />
-				<div className="flex flex-col gap-5 w-1/3">
-					<TextField
 						name="CertificateNumber"
-						label="Certificate Number"
+						label="Certificate Number or Code"
 						value={userData.CertificateNumber}
 						fullWidth
 						style={{
@@ -203,23 +222,32 @@ function App() {
 						}}
 						onChange={handleChange}
 					/>
+				</div>
+				<div className=" bg-black w-0.5" />
 
-					<div className="mt-auto w-full flex flex-col gap-2 items-center">
-						{error && checkIfAllFieldsEmpty() && (
-							<div className="w-full">
-								<Alert severity="error">{error}</Alert>
-							</div>
-						)}
-						{!isScraping && scrapedData.length > 0 && (
+				<div className="w-1/3 flex flex-col items-center justify-between">
+					<div className="w-full h-1/2 flex items-start">
+						<Button
+							variant="contained"
+							color="secondary"
+							style={{
+								minHeight: "5vh",
+								width: "100%",
+								textTransform: "none",
+							}}
+							onClick={() => setUserData(initialData)}
+						>
+							Clear Fields
+						</Button>
+					</div>
+					<div className="w-full h-1/2 flex flex-col justify-end">
+						{!isScraping && error && <Alert severity="error">{error}</Alert>}
+						{!isScraping && scrapedData.length > 0 && !error && (
 							<div className="fade-in-out w-full">
 								<Alert severity="success">Results Saved to Sheets</Alert>
 							</div>
 						)}
-						{!isScraping && scrapeData.length == 0 && (
-							<div className="w-full">
-								<Alert severity="info">No Results Found</Alert>
-							</div>
-						)}
+
 						{!isScraping && (
 							<Button
 								variant="contained"
@@ -234,7 +262,7 @@ function App() {
 								Search and Save to Sheets
 							</Button>
 						)}
-						{isScraping && <BarLoader color="blue" />}
+						{isScraping && <BarLoader color="blue" width={"100%"} />}
 					</div>
 				</div>
 			</div>

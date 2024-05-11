@@ -12,17 +12,18 @@ export const useScrape = () => {
 
 		try {
 			if (
-				userData["FirstName"] == "" &&
-				userData["LastName"] == "" &&
-				userData["City"] == "" &&
-				userData["State"] == "" &&
-				userData["ZipCode"] == "" &&
-				userData["CertificateNumber"] == "" &&
-				userData["SSN"] == "" &&
-				userData["Birthdate"] == "" &&
-				userData["Phone"] == ""
+				(userData["FirstName"] === "" || userData["LastName"] === "") &&
+				userData["City"] === "" &&
+				userData["State"] === "" &&
+				userData["ZipCode"] === "" &&
+				userData["CertificateNumber"] === "" &&
+				userData["SSN"] === "" &&
+				userData["Birthdate"] === "" &&
+				userData["Phone"] === ""
 			) {
-				throw new Error("Please fill in at least one field.");
+				throw new Error(
+					"Fill in the the First Name and Last Name fields or the Certificate Number field only."
+				);
 			}
 
 			const dataVGI =
@@ -92,6 +93,10 @@ export const useScrape = () => {
 			].filter((item) => Object.keys(item).length > 0);
 
 			setScrapedData(scrapedData);
+
+			if (scrapedData.length === 0) {
+				throw new Error("No data found.");
+			}
 
 			if (scrapedData.length > 0) {
 				const formattedScrapedData = scrapedData.map(
