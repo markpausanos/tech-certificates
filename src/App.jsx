@@ -75,20 +75,6 @@ function App() {
 		}
 	};
 
-	const checkIfAllFieldsEmpty = () => {
-		return (
-			userData["FirstName"] === "" &&
-			userData["LastName"] === "" &&
-			userData["City"] === "" &&
-			userData["State"] === "" &&
-			userData["ZipCode"] === "" &&
-			userData["CertificateNumber"] === "" &&
-			userData["SSN"] === "" &&
-			userData["Birthdate"] === "" &&
-			userData["Phone"] === ""
-		);
-	};
-
 	return (
 		<div className="h-screen w-screen flex flex-col items-center px-7 pt-10 gap-10 justify-center">
 			<div className=" h-[15vh] w-full">
