@@ -27,7 +27,7 @@ export const useScrape = () => {
 			}
 
 			const dataVGI =
-				userData["FirstName"] != "" || userData["LastName"] != ""
+				userData["FirstName"] !== "" || userData["LastName"] !== ""
 					? await ScrapeService.retrieveVGI(
 							userData["FirstName"],
 							userData["LastName"]
@@ -35,11 +35,11 @@ export const useScrape = () => {
 					: {};
 
 			const dataMains =
-				userData["FirstName"] != "" ||
-				userData["LastName"] != "" ||
-				userData["City"] != "" ||
-				userData["State"] != "" ||
-				userData["ZipCode"] != ""
+				userData["FirstName"] !== "" ||
+				userData["LastName"] !== "" ||
+				userData["City"] !== "" ||
+				userData["State"] !== "" ||
+				userData["ZipCode"] !== ""
 					? await ScrapeService.retrieveMains(
 							userData["FirstName"],
 							userData["LastName"],
@@ -50,7 +50,7 @@ export const useScrape = () => {
 					: {};
 
 			const dataACCA =
-				userData["FirstName"] != "" || userData["LastName"] != ""
+				userData["FirstName"] !== "" || userData["LastName"] !== ""
 					? await ScrapeService.retrieveACCA(
 							userData["FirstName"],
 							userData["LastName"]
@@ -62,9 +62,9 @@ export const useScrape = () => {
 				: {};
 
 			const dataEscoSSN =
-				userData["FirstName"] != "" &&
-				userData["LastName"] != "" &&
-				userData["SSN"] != ""
+				userData["FirstName"] !== "" &&
+				userData["LastName"] !== "" &&
+				userData["SSN"] !== ""
 					? await ScrapeService.retrieveEscoSSN(
 							userData["FirstName"],
 							userData["LastName"],
