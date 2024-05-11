@@ -228,7 +228,7 @@ function App() {
 					</div>
 					<div className="w-full h-1/2 flex flex-col justify-end">
 						{!isScraping && error && <Alert severity="error">{error}</Alert>}
-						{!isScraping && scrapedData.length > 0 && !error && (
+						{!isScraping && scrapedData.length > 0 && (
 							<div className="fade-in-out w-full">
 								<Alert severity="success">Results Saved to Sheets</Alert>
 							</div>
