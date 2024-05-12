@@ -99,8 +99,12 @@ function App() {
 				<h2 className="text-2xl">Enter the technician&apos;s details below:</h2>
 			</div>
 
-			<div className="w-full px-10 flex flex-row gap-10 border-gray-300 border-2 py-5">
-				<div className="flex flex-col  gap-5 w-1/3">
+			<div
+				className="w-full px-10 flex 
+			
+			flex-col md:flex-row gap-10 border-gray-300 border-2 py-5"
+			>
+				<div className="flex flex-col gap-5 w-full md:w-1/3">
 					<TextField
 						name="FirstName"
 						label="First Name"
@@ -155,7 +159,7 @@ function App() {
 					/>
 				</div>
 				<div className=" bg-black w-0.5" />
-				<div className="flex flex-col gap-5 w-1/3">
+				<div className="flex flex-col gap-5 w-full md:w-1/3">
 					<TextField
 						name="City"
 						label="City"
@@ -211,7 +215,7 @@ function App() {
 				</div>
 				<div className=" bg-black w-0.5" />
 
-				<div className="w-1/3 flex flex-col items-center justify-between">
+				<div className="w-full gap-10 md:w-1/3 md:gap-0 flex flex-col items-center justify-between">
 					<div className="w-full h-1/2 flex items-start">
 						<Button
 							variant="contained"
@@ -228,11 +232,13 @@ function App() {
 					</div>
 					<div className="w-full h-1/2 flex flex-col justify-end">
 						{!isScraping && error && <Alert severity="error">{error}</Alert>}
-						{!isScraping && scrapedData.length > 0 && (
-							<div className="fade-in-out w-full">
-								<Alert severity="success">Results Saved to Sheets</Alert>
-							</div>
-						)}
+						{!isScraping &&
+							scrapedData.length > 0 &&
+							!error(
+								<div className="fade-in-out w-full">
+									<Alert severity="success">Results Saved to Sheets</Alert>
+								</div>
+							)}
 
 						{!isScraping && (
 							<Button
