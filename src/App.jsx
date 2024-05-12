@@ -76,34 +76,34 @@ function App() {
 	};
 
 	return (
-		<div className="h-screen w-screen flex flex-col items-center px-7 pt-10 gap-10 justify-center">
-			<div className=" h-[15vh] w-full">
+		<div className="h-full w-screen flex flex-col items-center px-7 pt-10 gap-3 md:gap-10 justify-center">
+			<div className="h-44 md:h-[15vh] md:block w-full">
 				<img
 					src="/service.png"
 					alt="ESCO Logo"
-					className=" object-contain h-full w-full"
+					className="object-contain h-full w-full"
 				/>
 			</div>
-			<div className="flex flex-row justify-evenly w-screen">
-				<div className="w-1/4 md:w-1/3">
+			<div className="flex flex-col md:flex-row justify-evenly w-full">
+				<div className="invisible md:visible w-1/4 md:w-1/3">
 					<div className="border-b-4 my-4 border-black"></div>
 				</div>
-				<div className="w-1/2 text-center md:w-1/3">
-					<h1 className="text-4xl font-bold">Technician Data Search</h1>
+				<div className="w-full md:w-1/2 text-center">
+					<h1 className="text-lg sm:text-2xl md:text-4xl font-bold">
+						Technician Data Search
+					</h1>
 				</div>
-				<div className="w-1/4 md:w-1/3">
+				<div className="invisible md:visible w-1/4 md:w-1/3">
 					<div className="border-b-4 my-4 border-black"></div>
 				</div>
 			</div>
 			<div>
-				<h2 className="text-2xl">Enter the technician&apos;s details below:</h2>
+				<h2 className=" text-base sm:text-lg md:text-2xl">
+					Enter the technician&apos;s details below:
+				</h2>
 			</div>
 
-			<div
-				className="w-full px-10 flex 
-			
-			flex-col md:flex-row gap-10 border-gray-300 border-2 py-5"
-			>
+			<div className="w-full px-10 flex flex-col md:flex-row gap-10 border-gray-300 border-2 py-5">
 				<div className="flex flex-col gap-5 w-full md:w-1/3">
 					<TextField
 						name="FirstName"
