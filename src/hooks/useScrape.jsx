@@ -111,7 +111,22 @@ export const useScrape = () => {
 
 			setError(null);
 		} catch (error) {
-			setError(error.message);
+			if (error.message === "Failed to save data.") {
+				setError("Failed to save data.");
+			}
+			if (error.message === "No data found.") {
+				setError("No data found.");
+			}
+			if (
+				error.message ===
+				"Fill in the the First Name and Last Name fields or the Certificate Number field only."
+			) {
+				setError(
+					"Fill in the the First Name and Last Name fields or the Certificate Number field only."
+				);
+			}
+
+			setError("Something went wrong. Please try again.");
 		}
 
 		setIsScraping(false);
