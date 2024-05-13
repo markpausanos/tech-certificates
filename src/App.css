@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .fade-in-out {
-	animation: fadeInOut 6s linear forwards;
+	animation: fadeInOut 4s linear forwards;
 	opacity: 0;
 }
 
