@@ -3,6 +3,7 @@ import { Alert, Button, TextField } from "@mui/material";
 import { useScrape } from "./hooks/useScrape";
 import "./App.css";
 import { BarLoader } from "react-spinners";
+import { states } from "./utils";
 
 const initialData = {
 	FirstName: "",
@@ -33,7 +34,8 @@ const initialFieldErrorStatus = {
 function App() {
 	const [userData, setUserData] = useState(initialData);
 	const [fieldErrors, setFieldErrors] = useState(initialFieldErrorStatus);
-	const { isScraping, scrapedData, error, scrapeData } = useScrape();
+	const { isScraping, scrapedData, error, websiteDataCount, scrapeData } =
+		useScrape();
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -47,6 +49,8 @@ function App() {
 		if (name === "Phone" && value.length > 10) {
 			return;
 		}
+
+		// trim each userData value
 
 		setUserData((prevData) => ({
 			...prevData,
@@ -68,6 +72,31 @@ function App() {
 	};
 
 	const handleSubmit = async () => {
+		// trim each userData value
+
+		const trimObject = (obj) => {
+			let trimmed = {};
+			for (let key in obj) {
+				trimmed[key] = obj[key].trim();
+			}
+			return trimmed;
+		};
+
+		setUserData(() => trimObject(userData));
+		setFieldErrors(initialFieldErrorStatus);
+
+		// update state to abbreviated state name
+		if (userData.State.length > 0) {
+			const stateAbbreviation = states[userData.State];
+
+			if (stateAbbreviation) {
+				setUserData((prevData) => ({
+					...prevData,
+					State: stateAbbreviation,
+				}));
+			}
+		}
+
 		await scrapeData(userData);
 
 		if (!error) {
@@ -233,8 +262,25 @@ function App() {
 					<div className="w-full h-1/2 flex flex-col justify-end">
 						{!isScraping && error && <Alert severity="error">{error}</Alert>}
 						{!isScraping && scrapedData.length > 0 && !error && (
-							<div className="fade-in-out w-full">
+							<div className="w-full">
 								<Alert severity="success">Results Saved to Sheets</Alert>
+							</div>
+						)}
+						{!isScraping && scrapedData.length > 0 && !error && (
+							<div className="w-full">
+								<Alert severity="info">
+									{Object.keys(websiteDataCount).map((key, index) => {
+										return (
+											<p key={index}>
+												{websiteDataCount[key] > 0
+													? `${key.toUpperCase()} found ${
+															websiteDataCount[key]
+													  } record(s)`
+													: ""}
+											</p>
+										);
+									})}
+								</Alert>
 							</div>
 						)}
 
