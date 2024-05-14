@@ -258,7 +258,9 @@ function App() {
 						{!isScraping && error && <Alert severity="error">{error}</Alert>}
 						{!isScraping && scrapedData.length > 0 && !error && (
 							<div className="w-full">
-								<Alert severity="success">Results Saved to Sheets</Alert>
+								<Alert severity="success">{`${
+									scrapedData.length > 20 ? "Top 20 " : ""
+								}Results Saved to Sheets`}</Alert>
 							</div>
 						)}
 						{!isScraping && scrapedData.length > 0 && !error && (
