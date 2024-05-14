@@ -50,7 +50,14 @@ function App() {
 			return;
 		}
 
-		// trim each userData value
+		if (name === "State") {
+			if (userData.State.length > 0) {
+				const stateAbbreviation = states[value];
+				if (stateAbbreviation) {
+					tempValue = stateAbbreviation;
+				}
+			}
+		}
 
 		setUserData((prevData) => ({
 			...prevData,
@@ -84,18 +91,6 @@ function App() {
 
 		setUserData(() => trimObject(userData));
 		setFieldErrors(initialFieldErrorStatus);
-
-		// update state to abbreviated state name
-		if (userData.State.length > 0) {
-			const stateAbbreviation = states[userData.State];
-
-			if (stateAbbreviation) {
-				setUserData((prevData) => ({
-					...prevData,
-					State: stateAbbreviation,
-				}));
-			}
-		}
 
 		await scrapeData(userData);
 
