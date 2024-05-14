@@ -49,6 +49,8 @@ export const useScrape = () => {
 					  )
 					: {};
 
+			console.log(dataMains.data);
+
 			const dataACCA =
 				userData["FirstName"] !== "" || userData["LastName"] !== ""
 					? await ScrapeService.retrieveACCA(
@@ -92,6 +94,8 @@ export const useScrape = () => {
 				{ ...(dataEscoCert.data || {}) },
 			].filter((item) => Object.keys(item).length > 0);
 
+			console.log(scrapedData);
+
 			setScrapedData(scrapedData);
 
 			if (scrapedData.length === 0) {
@@ -99,11 +103,9 @@ export const useScrape = () => {
 			}
 
 			if (scrapedData.length > 0) {
-				const formattedScrapedData = scrapedData.map(
-					(obj) => Object.values(obj)[0]
-				);
+				const finalScrapedData = Object.values(scrapedData[0]);
 
-				const isSaved = await ScrapeService.saveData(formattedScrapedData);
+				const isSaved = await ScrapeService.saveData(finalScrapedData);
 				if (!isSaved) {
 					throw new Error("Failed to save data.");
 				}
