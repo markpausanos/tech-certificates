@@ -52,7 +52,7 @@ function App() {
 
 		if (name === "State") {
 			if (userData.State.length > 0) {
-				const stateAbbreviation = states[value];
+				const stateAbbreviation = states[value.toLowerCase()];
 				if (stateAbbreviation) {
 					tempValue = stateAbbreviation;
 				}
