@@ -129,6 +129,7 @@ export const useScrape = () => {
 				{ ...(dataSkillC.data || {}) },
 				{ ...(dataEscoSSN.data || {}) },
 				{ ...(dataEscoCert.data || {}) },
+				{ ...(dataEPA608.data || {}) },
 			].filter((item) => Object.keys(item).length > 0);
 
 			setScrapedData(scrapedData);
