@@ -226,7 +226,7 @@ function App() {
 						onChange={handleChange}
 					/>
 					<TextField
-						name="Phone"
+						name="Phone (10 Numbers)"
 						label="Phone"
 						value={userData.Phone}
 						fullWidth
