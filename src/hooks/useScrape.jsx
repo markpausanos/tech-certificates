@@ -108,19 +108,19 @@ export const useScrape = () => {
 					: {};
 
 			const dataEPA608 =
-				userData["FirstName"] !== "" &&
-				userData["LastName"] !== "" &&
-				userData["Birthdate"] !== "" &&
-				userData["CertificateNumber"] !== "";
-			userData["Phone"] !== ""
-				? await ScrapeService.retrieveEPA608(
-						userData["FirstName"],
-						userData["LastName"],
-						userData["Birthdate"],
-						userData["CertificateNumber"],
-						userData["Phone"]
-				  )
-				: {};
+				userData["FirstName"] !== "" ||
+				userData["LastName"] !== "" ||
+				userData["Birthdate"] !== "" ||
+				userData["CertificateNumber"] !== "" ||
+				userData["Phone"] !== ""
+					? await ScrapeService.retrieveEPA608(
+							userData["FirstName"],
+							userData["LastName"],
+							userData["Birthdate"],
+							userData["CertificateNumber"],
+							userData["Phone"]
+					  )
+					: {};
 
 			const scrapedData = [
 				{ ...(dataVGI.data || {}) },
@@ -129,7 +129,6 @@ export const useScrape = () => {
 				{ ...(dataSkillC.data || {}) },
 				{ ...(dataEscoSSN.data || {}) },
 				{ ...(dataEscoCert.data || {}) },
-				{ ...(dataEPA608.data || {}) },
 			].filter((item) => Object.keys(item).length > 0);
 
 			setScrapedData(scrapedData);
