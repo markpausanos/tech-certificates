@@ -25,10 +25,11 @@ export const useScrape = () => {
 		try {
 			if (
 				(userData["FirstName"] === "" || userData["LastName"] === "") &&
-				userData["CertificateNumber"] === ""
+				userData["CertificateNumber"] === "" &&
+				userData["Phone"] === ""
 			) {
 				throw new Error(
-					"Fill in at least the First Name and Last Name fields or at least the Certificate Number field only."
+					"Fill in at least the First Name and Last Name fields, the Certificate Number field only or the Phone field only."
 				);
 			}
 
@@ -178,7 +179,7 @@ export const useScrape = () => {
 				case "No data found.":
 					setError(error.message);
 					break;
-				case "Fill in at least the First Name and Last Name fields or at least the Certificate Number field only.":
+				case "Fill in at least the First Name and Last Name fields, the Certificate Number field only or the Phone field only.":
 				case error.message.includes("Please narrow down your search."):
 					setError(error.message);
 					break;
