@@ -272,7 +272,11 @@ function App() {
 												{websiteDataCount[key] > 0
 													? `${key.toUpperCase()} found ${
 															websiteDataCount[key]
-													  } record(s)`
+													} record(s) ${
+															websiteDataCount[key] > 20
+																? "(Too many records to save)"
+																: ""
+													}`
 													: ""}
 											</p>
 										);
