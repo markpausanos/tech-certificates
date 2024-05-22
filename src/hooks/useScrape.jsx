@@ -165,7 +165,11 @@ export const useScrape = () => {
 					);
 				});
 
-				const finalestData = Object.values(finalScrapedData[0]);
+				console.log(finalScrapedData);
+
+				const finalestData = finalScrapedData.flatMap((obj) =>
+					Object.values(obj)
+				);
 
 				const isSaved = await ScrapeService.saveData(finalestData);
 				if (!isSaved) {
