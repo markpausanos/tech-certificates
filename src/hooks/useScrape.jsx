@@ -24,7 +24,8 @@ export const useScrape = () => {
 
 		try {
 			if (
-				(userData["FirstName"] === "" || userData["LastName"] === "") &&
+				userData["FirstName"] === "" &&
+				userData["LastName"] === "" &&
 				userData["CertificateNumber"] === "" &&
 				userData["Phone"] === ""
 			) {
