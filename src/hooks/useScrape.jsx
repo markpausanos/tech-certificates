@@ -35,7 +35,7 @@ export const useScrape = () => {
 			}
 
 			const dataVGI =
-				userData["FirstName"] !== "" || userData["LastName"] !== ""
+				userData["FirstName"] !== "" && userData["LastName"] !== ""
 					? await ScrapeService.retrieveVGI(
 							userData["FirstName"],
 							userData["LastName"]
@@ -70,7 +70,7 @@ export const useScrape = () => {
 			}
 
 			const dataACCA =
-				userData["FirstName"] !== "" || userData["LastName"] !== ""
+				userData["FirstName"] !== "" && userData["LastName"] !== ""
 					? await ScrapeService.retrieveACCA(
 							userData["FirstName"],
 							userData["LastName"]
